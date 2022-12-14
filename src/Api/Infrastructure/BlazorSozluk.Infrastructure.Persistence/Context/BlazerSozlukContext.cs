@@ -7,6 +7,14 @@ internal class BlazerSozlukContext : DbContext
 {
     public const string DEFAULT_SCHEMA = "dbo";
 
+    /// <summary>
+    /// Migration yaparken bu constructr calısacağı için, bir optionbuilder config bulunmayacak
+    /// </summary>
+    public BlazerSozlukContext()
+    {
+
+    }
+
     public BlazerSozlukContext(DbContextOptions options) : base(options)
     {
 
@@ -22,6 +30,21 @@ internal class BlazerSozlukContext : DbContext
     public DbSet<EntryCommentFavorite> EntryCommentFavorites { get; set; }
     public DbSet<EmailConfirmation> EmailConfirmations { get; set; }
 
+    /// <summary>
+    /// Migration için ekledik, optionbuilder config bulunmadığın için burası çalışacak
+    /// </summary>
+    /// <param name="optionsBuilder"></param>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            var connStr = "Data Source=DESKTOP-9L477L0;TrustServerCertificate=True;Initial Catalog=blazorsozluk;User ID=caglark;Password=caglar39";
+            optionsBuilder.UseSqlServer(connStr, opt =>
+            {
+                opt.EnableRetryOnFailure();
+            });
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
