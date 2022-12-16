@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace BlazorSozluk.Infrastructure.Persistence.Context;
-internal class BlazerSozlukContext : DbContext
+public class BlazerSozlukContext : DbContext
 {
     public const string DEFAULT_SCHEMA = "dbo";
 
@@ -38,7 +38,7 @@ internal class BlazerSozlukContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            var connStr = "Data Source=DESKTOP-9L477L0;TrustServerCertificate=True;Initial Catalog=blazorsozluk;User ID=caglark;Password=caglar39";
+            var connStr = "Data Source=DESKTOP-1O3E3HA;TrustServerCertificate=True;Initial Catalog=blazorsozluk;User ID=sa;Password=sa";
             optionsBuilder.UseSqlServer(connStr, opt =>
             {
                 opt.EnableRetryOnFailure();
