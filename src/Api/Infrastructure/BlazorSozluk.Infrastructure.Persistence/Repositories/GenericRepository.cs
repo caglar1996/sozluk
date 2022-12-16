@@ -1,6 +1,5 @@
 ﻿using BlazorSozluk.Api.Application.Interfaces.Repositories;
 using BlazorSozluk.Api.Domain.Models;
-using BlazorSozluk.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -8,10 +7,10 @@ namespace BlazorSozluk.Infrastructure.Persistence.Repositories
 {
     public class GenericRepository<TEntiy> : IGenericRepository<TEntiy> where TEntiy : BaseEntity
     {
-        private readonly BlazerSozlukContext dbContext;
+        private readonly DbContext dbContext;
         protected DbSet<TEntiy> Entity => dbContext.Set<TEntiy>();
 
-        public GenericRepository(BlazerSozlukContext dbContext)
+        public GenericRepository(DbContext dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -94,13 +93,13 @@ namespace BlazorSozluk.Infrastructure.Persistence.Repositories
         public virtual bool DeleteRange(Expression<Func<TEntiy, bool>> predicate)
         {
             // Dışardan gelen lamda Expression ile gelen kayıtların toplu şekilde silinmesi
-            dbContext.RemoveRange(predicate);
+            dbContext.RemoveRange(Entity.Where(predicate));
             return dbContext.SaveChanges() > 0;
         }
 
         public virtual async Task<bool> DeleteRangeAsync(Expression<Func<TEntiy, bool>> predicate)
         {
-            dbContext.RemoveRange(predicate);
+            dbContext.RemoveRange(Entity.Where(predicate));
             return await dbContext.SaveChangesAsync() > 0;
         }
         #endregion
