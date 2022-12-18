@@ -1,7 +1,6 @@
 using BlazorSozluk.Api.Application.Extensions;
 using BlazorSozluk.Infrastructure.Persistence.Extensions;
 using FluentValidation.AspNetCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

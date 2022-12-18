@@ -11,7 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace BlazorSozluk.Api.Application.Features.Commands.User
+namespace BlazorSozluk.Api.Application.Features.Commands.User.Login
 {
     public class LoginUserCommandHanler : IRequestHandler<LoginUserCommand, LoginUserViewModel>
     {
@@ -28,7 +28,7 @@ namespace BlazorSozluk.Api.Application.Features.Commands.User
 
         public async Task<LoginUserViewModel> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var dbUser = await userRepository.GetSingleAsync(i => i.EmailAdress == request.EmailAddress);
+            var dbUser = await userRepository.GetSingleAsync(i => i.EmailAddress == request.EmailAddress);
 
             if (dbUser == null)
                 throw new DatabaseValidationException("User not found!");
@@ -48,7 +48,7 @@ namespace BlazorSozluk.Api.Application.Features.Commands.User
             var claims = new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier,dbUser.Id.ToString()),
-                new Claim(ClaimTypes.Email,dbUser.EmailAdress),
+                new Claim(ClaimTypes.Email,dbUser.EmailAddress),
                 new Claim(ClaimTypes.Name,dbUser.UserName),
                 new Claim(ClaimTypes.GivenName,dbUser.FirstName),
                 new Claim(ClaimTypes.Surname,dbUser.LastName),
